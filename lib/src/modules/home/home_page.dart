@@ -1,4 +1,3 @@
-import 'package:academiadoflutter/src/modules/template/base_layout.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/env/env.dart';
@@ -18,42 +17,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with Loader, Messages {
   @override
   Widget build(BuildContext context) {
-    return BaseLayout(
-      body: Column(
-        children: [
-          Text(
-            Env.instance.get('backend_base_url'),
+    return Column(
+      children: [
+        Text(
+          Env.instance.get('backend_base_url'),
+        ),
+        Text(
+          context.screenWidget.toString(),
+        ),
+        Container(
+          color: context.colors.primary,
+          width: context.percentWidth(.5),
+          height: context.percentHeight(.3),
+          child: Text(
+            'ExtraBold',
+            style: context.textStyles.textBold,
           ),
-          Text(
-            context.screenWidget.toString(),
-          ),
-          Container(
-            color: context.colors.primary,
-            width: context.percentWidth(.5),
-            height: context.percentHeight(.3),
-            child: Text(
-              'ExtraBold',
-              style: context.textStyles.textBold,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  label: Text('Login'),
-                ),
-                validator: (String) => 'Erro',
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                label: Text('Login'),
               ),
+              validator: (String) => 'Erro',
             ),
           ),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Botão'),
-          ),
-        ],
-      ),
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          child: const Text('Botão'),
+        ),
+      ],
     );
   }
 }
