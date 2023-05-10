@@ -1,3 +1,4 @@
+import 'package:academiadoflutter/src/modules/template/base_layout.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/env/env.dart';
@@ -17,19 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with Loader, Messages {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          showLoader();
-          await Future.delayed(const Duration(seconds: 5));
-          hideLoader();
-          // showError('Erro qualquer');
-          showWarning('atenção');
-        },
-      ),
+    return BaseLayout(
       body: Column(
         children: [
           Text(

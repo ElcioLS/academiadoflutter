@@ -8,11 +8,11 @@ class AppModule extends Module {
   @override
   List<Module> get imports => [
         CoreModule(),
-      ]; 
+      ];
 
   @override
   List<ModularRoute> get routes => [
         ModuleRoute('/login', module: LoginModule()),
-        ChildRoute('/', child: (context, args) => const HomePage()),
+        ChildRoute('/home', child: (context, args) => const HomePage()),
       ];
 }
