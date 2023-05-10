@@ -1,6 +1,7 @@
 import 'package:academiadoflutter/src/core/ui/helpers/size_extensions.dart';
 import 'package:academiadoflutter/src/modules/template/menu/menu_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import 'menu_enum.dart';
 
@@ -50,6 +51,7 @@ class _MenuBarState extends State<MenuBar> {
                   onPressed: (Menu menu) {
                     setState(() {
                       selectedMenu = menu;
+                      Modular.to.navigate(menu.route);
                     });
                   },
                 );
