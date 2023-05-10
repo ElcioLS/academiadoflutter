@@ -1,4 +1,5 @@
 import 'package:academiadoflutter/src/core/global/constants.dart';
+import 'package:academiadoflutter/src/core/global/global_context.dart';
 import 'package:dio/dio.dart';
 
 import '../../storage/storage.dart';
@@ -15,9 +16,12 @@ class AuthInterceptor extends Interceptor {
     handler.next(options);
   }
 
-  // @override
-  // void onError(DioError err, ErrorInterceptorHandler handler) {
-  //   final accessToken = isExpired;
-  //   super.onError(err, handler);
-  // }
+  @override
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    if (err.response?.statusCode == 401) {
+      GlobalContext.instance.loginExpire();
+    } else {
+      handler.next(err);
+    }
+  }
 }
