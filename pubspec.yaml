@@ -2,11 +2,7 @@
 
 name: academiadoflutter
 
-description: A new Flutter project.
-
-
-
-
+description: Projeto Flutter Web desenvolvido durante a Dart Week de maio de 2023 dentro da Academia Do Flutter de Rodrigo Rahman
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -35,7 +31,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
