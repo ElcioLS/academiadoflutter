@@ -1,3 +1,4 @@
+import 'package:academiadoflutter/src/modules/payment_type/widgets/payment_type_header.dart';
 import 'package:flutter/material.dart';
 
 class PaymentTypePage extends StatelessWidget {
@@ -5,11 +6,14 @@ class PaymentTypePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Payment Type'),
+    return Container(
+      color: Colors.grey[50],
+      padding: const EdgeInsets.only(left: 40, top: 40),
+      child: Column(
+        children: const [
+          PaymentTypeHeader(),
+        ],
       ),
-      body: Container(),
     );
   }
 }
