@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
   @override
   Widget build(BuildContext context) {
     final screenShortestSide = context.screenShortestSide;
-    final screenWidth = context.screenWidget;
+    final screenWidth = context.screenWidth;
     return Scaffold(
       backgroundColor: context.colors.black,
       body: Form(

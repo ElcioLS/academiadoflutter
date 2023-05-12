@@ -10,7 +10,7 @@ class BaseLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = context.screenWidget;
+    final screenWidth = context.screenWidth;
     final shortestSide = context.screenShortestSide;
 
     return Scaffold(

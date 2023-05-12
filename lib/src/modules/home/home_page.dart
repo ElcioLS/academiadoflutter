@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> with Loader, Messages {
           Env.instance.get('backend_base_url'),
         ),
         Text(
-          context.screenWidget.toString(),
+          context.screenWidth.toString(),
         ),
         Container(
           color: context.colors.primary,
