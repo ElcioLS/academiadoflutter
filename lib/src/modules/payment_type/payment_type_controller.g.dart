@@ -63,6 +63,24 @@ mixin _$PaymentTypeController on PaymentTypeControllerBase, Store {
     });
   }
 
+  late final _$_filterEnabledAtom =
+      Atom(name: 'PaymentTypeControllerBase._filterEnabled', context: context);
+
+  bool? get filterEnabled {
+    _$_filterEnabledAtom.reportRead();
+    return super._filterEnabled;
+  }
+
+  @override
+  bool? get _filterEnabled => filterEnabled;
+
+  @override
+  set _filterEnabled(bool? value) {
+    _$_filterEnabledAtom.reportWrite(value, super._filterEnabled, () {
+      super._filterEnabled = value;
+    });
+  }
+
   late final _$_paymentTypeSelectedAtom = Atom(
       name: 'PaymentTypeControllerBase._paymentTypeSelected', context: context);
 
@@ -96,6 +114,20 @@ mixin _$PaymentTypeController on PaymentTypeControllerBase, Store {
   @override
   Future<void> addPayment() {
     return _$addPaymentAsyncAction.run(() => super.addPayment());
+  }
+
+  late final _$PaymentTypeControllerBaseActionController =
+      ActionController(name: 'PaymentTypeControllerBase', context: context);
+
+  @override
+  void changeFilter(bool? enabled) {
+    final _$actionInfo = _$PaymentTypeControllerBaseActionController
+        .startAction(name: 'PaymentTypeControllerBase.changeFilter');
+    try {
+      return super.changeFilter(enabled);
+    } finally {
+      _$PaymentTypeControllerBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
