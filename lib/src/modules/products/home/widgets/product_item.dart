@@ -45,7 +45,7 @@ class ProductItem extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Text(29.94.CurrencyPTBR),
+                  child: Text(49.99.CurrencyPTBR),
                 ),
                 TextButton(
                   onPressed: () {},
