@@ -16,9 +16,12 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<void> deleteProduct(int id) async {
     try {
-      await _dio.auth().put('/products/$id', data: {
-        'enabled': false,
-      });
+      await _dio.auth().put(
+        '/products/$id',
+        data: {
+          'enabled': false,
+        },
+      );
     } on DioError catch (e, s) {
       log('Erro ao deletar produto', error: e, stackTrace: s);
       throw RepositoryException(message: 'Erro ao deletar produto');
@@ -32,7 +35,7 @@ class ProductRepositoryImpl implements ProductRepository {
         '/products',
         queryParameters: {
           if (name != null) 'name': name,
-          'enable': true,
+          'enabled': true,
         },
       );
       return productResult.data

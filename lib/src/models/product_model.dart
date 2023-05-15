@@ -3,7 +3,7 @@ import 'dart:convert';
 class ProductModel {
   final int? id;
   final String name;
-  final String decription;
+  final String description;
   final double price;
   final String image;
   final bool enabled;
@@ -11,7 +11,7 @@ class ProductModel {
   ProductModel({
     this.id,
     required this.name,
-    required this.decription,
+    required this.description,
     required this.price,
     required this.image,
     required this.enabled,
@@ -21,7 +21,7 @@ class ProductModel {
     return {
       'id': id,
       'name': name,
-      'decription': decription,
+      'description': description,
       'price': price,
       'image': image,
       'enabled': enabled,
@@ -32,7 +32,7 @@ class ProductModel {
     return ProductModel(
       id: map['id']?.toInt(),
       name: map['name'] ?? '',
-      decription: map['decription'] ?? '',
+      description: map['description'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
       image: map['image'] ?? '',
       enabled: map['enabled'] ?? false,

@@ -3,9 +3,15 @@ import 'package:academiadoflutter/src/core/ui/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/env/env.dart';
+import '../../../../models/product_model.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key});
+  final ProductModel product;
+
+  const ProductItem({
+    super.key,
+    required this.product,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class ProductItem extends StatelessWidget {
                 ),
                 image: DecorationImage(
                   image: NetworkImage(
-                    '${Env.instance.get('backend_base_url')}/storage/flutterweb.png',
+                    '${Env.instance.get('backend_base_url')}${product.image}',
                   ),
                   fit: BoxFit.fill,
                 ),
@@ -35,9 +41,14 @@ class ProductItem extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Text(
-                'Curso de Flutter Web ADF',
-                style: context.textStyles.textMedium,
+              child: Tooltip(
+                message: product.name,
+                child: Text(
+                  product.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textStyles.textMedium,
+                ),
               ),
             ),
             Row(
@@ -45,7 +56,7 @@ class ProductItem extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Text(49.99.CurrencyPTBR),
+                  child: Text(product.price.CurrencyPTBR),
                 ),
                 TextButton(
                   onPressed: () {},
