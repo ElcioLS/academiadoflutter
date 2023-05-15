@@ -30,6 +30,12 @@ abstract class ProductsControllerBase with Store {
   String? _filterName;
 
   @action
+  Future<void> filterByName(String name) async {
+    _filterName = name;
+    await loadProducts();
+  }
+
+  @action
   Future<void> loadProducts() async {
     try {
       _status = ProductStateStatus.loading;
