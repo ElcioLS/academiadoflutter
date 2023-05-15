@@ -4,7 +4,7 @@ import 'package:academiadoflutter/src/models/product_model.dart';
 import 'package:academiadoflutter/src/repositories/products/product_repository.dart';
 import 'package:mobx/mobx.dart';
 
-part 'products_controller.g.dart';
+part '../../home/products_controller.g.dart';
 
 enum ProductStateStatus {
   initial,
