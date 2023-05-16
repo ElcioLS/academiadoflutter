@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:academiadoflutter/src/models/product_model.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../repositories/products/product_repository.dart';
@@ -14,6 +16,7 @@ enum ProductDetailStateStatus {
   errorLoadProduct,
   deleted,
   uploaded,
+  saved,
 }
 
 class ProductDetailController = ProductDetailControllerBase
@@ -31,6 +34,9 @@ abstract class ProductDetailControllerBase with Store {
   @readonly
   String? _imagePath;
 
+  @readonly
+  ProductModel? _productModel;
+
   ProductDetailControllerBase(this._productRepository);
 
   @action
@@ -38,5 +44,25 @@ abstract class ProductDetailControllerBase with Store {
     _status = ProductDetailStateStatus.loading;
     _imagePath = await _productRepository.uploadImageProduct(file, fileName);
     _status = ProductDetailStateStatus.uploaded;
+  }
+
+  Future<void> save(String name, double price, String description) async {
+    try {
+      _status = ProductDetailStateStatus.loading;
+      final productModel = ProductModel(
+        name: name,
+        description: description,
+        price: price,
+        image: _imagePath!,
+        enabled: _productModel?.enabled ?? true,
+      );
+
+      await _productRepository.save(productModel);
+      _status = ProductDetailStateStatus.saved;
+    } catch (e, s) {
+      log('Erro ao salvar produto', error: e, stackTrace: s);
+      _status = ProductDetailStateStatus.error;
+      _errorMessage = 'Erro ao salvar produto';
+    }
   }
 }

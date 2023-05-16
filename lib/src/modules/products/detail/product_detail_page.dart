@@ -7,8 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
+import 'package:validatorless/validatorless.dart';
 
 import '../../../core/env/env.dart';
+import '../../../core/ui/helpers/loader.dart';
+import '../../../core/ui/helpers/messages.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final int? productId;
@@ -22,8 +26,55 @@ class ProductDetailPage extends StatefulWidget {
   State<ProductDetailPage> createState() => _ProductDetailPageState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage> {
+class _ProductDetailPageState extends State<ProductDetailPage>
+    with Loader, Messages {
   final controller = Modular.get<ProductDetailController>();
+  final formKey = GlobalKey<FormState>();
+  final nameEC = TextEditingController();
+  final priceEC = TextEditingController();
+  final descriptionEC = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      reaction((_) => controller.status, (status) {
+        switch (status) {
+          case ProductDetailStateStatus.initial:
+            break;
+          case ProductDetailStateStatus.loading:
+            showLoader();
+            break;
+          case ProductDetailStateStatus.loaded:
+            hideLoader();
+            break;
+          case ProductDetailStateStatus.error:
+            hideLoader();
+            showError(controller.errorMessage!);
+            break;
+          case ProductDetailStateStatus.errorLoadProduct:
+            break;
+          case ProductDetailStateStatus.deleted:
+            break;
+          case ProductDetailStateStatus.uploaded:
+            break;
+          case ProductDetailStateStatus.saved:
+            hideLoader();
+            Navigator.pop(context);
+            break;
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    nameEC.dispose();
+    priceEC.dispose();
+    descriptionEC.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +84,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       padding: const EdgeInsets.all(40),
       child: SingleChildScrollView(
         child: Form(
+          key: formKey,
           child: Column(
             children: [
               Row(
@@ -100,12 +152,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: Column(
                       children: [
                         TextFormField(
+                          controller: nameEC,
+                          validator: Validatorless.required('Nome obrigatório'),
                           decoration: const InputDecoration(
                             label: Text('Nome'),
                           ),
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
+                          controller: priceEC,
+                          validator: Validatorless.multiple([
+                            Validatorless.required('Preço obrigatório'),
+                            Validatorless.number('Somente números'),
+                          ]),
                           decoration: const InputDecoration(
                             label: Text('Preço'),
                           ),
@@ -121,6 +180,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                controller: descriptionEC,
+                validator: Validatorless.required('Descrição obrigatória'),
                 maxLines: null,
                 minLines: 10,
                 keyboardType: TextInputType.multiline,
@@ -161,7 +222,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         width: widthButtonAction / 2,
                         height: 60,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final valid =
+                                formKey.currentState?.validate() ?? false;
+                            if (valid) {
+                              if (controller.imagePath == null) {
+                                showWarning(
+                                    'Imagem obrigatória! Por favor clique em adicionar imagem');
+                                return;
+                              }
+                              controller.save(
+                                nameEC.text,
+                                UtilBrasilFields.converterMoedaParaDouble(
+                                  priceEC.text,
+                                ),
+                                descriptionEC.text,
+                              );
+                            }
+                          },
                           child: Text(
                             'Salvar',
                             style: context.textStyles.textBold,
