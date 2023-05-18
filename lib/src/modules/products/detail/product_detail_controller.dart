@@ -46,10 +46,12 @@ abstract class ProductDetailControllerBase with Store {
     _status = ProductDetailStateStatus.uploaded;
   }
 
+  @action
   Future<void> save(String name, double price, String description) async {
     try {
       _status = ProductDetailStateStatus.loading;
       final productModel = ProductModel(
+        id: _productModel?.id,
         name: name,
         description: description,
         price: price,
@@ -63,6 +65,41 @@ abstract class ProductDetailControllerBase with Store {
       log('Erro ao salvar produto', error: e, stackTrace: s);
       _status = ProductDetailStateStatus.error;
       _errorMessage = 'Erro ao salvar produto';
+    }
+  }
+
+  @action
+  Future<void> loadProduct(int? id) async {
+    try {
+      _status = ProductDetailStateStatus.loading;
+      _productModel = null;
+      _imagePath = null;
+      if (id != null) {
+        _productModel = await _productRepository.getProduct(id);
+        _imagePath = _productModel!.image;
+      }
+      _status = ProductDetailStateStatus.loaded;
+    } catch (e, s) {
+      log('Erro ao carregar prouto', error: e, stackTrace: s);
+      _status = ProductDetailStateStatus.errorLoadProduct;
+    }
+  }
+
+  @action
+  Future<void> deleteProduct() async {
+    try {
+      _status = ProductDetailStateStatus.loading;
+      if (_productModel != null && _productModel!.id != null) {
+        await _productRepository.deleteProduct(_productModel!.id!);
+        _status = ProductDetailStateStatus.deleted;
+      }
+      await Future.delayed(Duration.zero);
+      _status = ProductDetailStateStatus.error;
+      _errorMessage = 'Produto não cadastrado, impossível deletar o produto.';
+    } catch (e, s) {
+      log('Erro ao deletar produto', error: e, stackTrace: s);
+      _status = ProductDetailStateStatus.error;
+      _errorMessage = 'Erro ao cadastrar produto';
     }
   }
 }

@@ -9,11 +9,7 @@ class ProductsModule extends Module {
   @override
   List<Bind> get binds => [
         Bind.lazySingleton((i) => ProductsController(i())),
-        Bind.lazySingleton(
-          (i) => ProductDetailController(
-            i(),
-          ),
-        ),
+        Bind.lazySingleton((i) => ProductDetailController(i())),
       ];
 
   @override
@@ -21,8 +17,8 @@ class ProductsModule extends Module {
         ChildRoute('/', child: (context, args) => const ProductsPage()),
         ChildRoute(
           '/detail',
-          child: (context, args) => const ProductDetailPage(
-            productId: null,
+          child: (context, args) => ProductDetailPage(
+            productId: int.tryParse(args.queryParams['id'] ?? 'não informado'),
           ),
         ),
       ];

@@ -1,3 +1,4 @@
+import 'package:academiadoflutter/src/core/extensions/formatter_extensions.dart';
 import 'package:academiadoflutter/src/core/ui/helpers/size_extensions.dart';
 import 'package:academiadoflutter/src/core/ui/helpers/upload_html_helper.dart';
 import 'package:academiadoflutter/src/core/ui/styles/text_styles.dart';
@@ -17,10 +18,7 @@ import '../../../core/ui/helpers/messages.dart';
 class ProductDetailPage extends StatefulWidget {
   final int? productId;
 
-  const ProductDetailPage({
-    super.key,
-    required this.productId,
-  });
+  const ProductDetailPage({super.key, required this.productId});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -47,6 +45,10 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             showLoader();
             break;
           case ProductDetailStateStatus.loaded:
+            final model = controller.productModel!;
+            nameEC.text = model.name;
+            priceEC.text = model.price.CurrencyPTBR;
+            descriptionEC.text = model.description;
             hideLoader();
             break;
           case ProductDetailStateStatus.error:
@@ -54,17 +56,21 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             showError(controller.errorMessage!);
             break;
           case ProductDetailStateStatus.errorLoadProduct:
-            break;
-          case ProductDetailStateStatus.deleted:
+            hideLoader();
+            showError('Erro ao carregar produto para alteração');
+            Navigator.of(context).pop();
             break;
           case ProductDetailStateStatus.uploaded:
+            hideLoader();
             break;
+          case ProductDetailStateStatus.deleted:
           case ProductDetailStateStatus.saved:
             hideLoader();
             Navigator.pop(context);
             break;
         }
       });
+      controller.loadProduct(widget.productId);
     });
   }
 
@@ -163,7 +169,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                           controller: priceEC,
                           validator: Validatorless.multiple([
                             Validatorless.required('Preço obrigatório'),
-                            Validatorless.number('Somente números'),
+                            // Validatorless.number('Somente números'),
                           ]),
                           decoration: const InputDecoration(
                             label: Text('Preço'),
@@ -202,17 +208,54 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                         padding: const EdgeInsets.all(5),
                         width: widthButtonAction / 2,
                         height: 60,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(
-                              color: Colors.red,
+                        child: Visibility(
+                          visible: widget.productId != null,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(
+                                color: Colors.red,
+                              ),
                             ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Deletar',
-                            style: context.textStyles.textBold.copyWith(
-                              color: Colors.red,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Confirmar'),
+                                    content: Text(
+                                      'Confirma a exclusão do produto ${controller.productModel!.name} ?',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          'Cancelar',
+                                          style: context.textStyles.textBold
+                                              .copyWith(color: Colors.red),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          controller.deleteProduct();
+                                        },
+                                        child: Text(
+                                          'Confirmar',
+                                          style: context.textStyles.textBold,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Deletar',
+                              style: context.textStyles.textBold.copyWith(
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                         ),
