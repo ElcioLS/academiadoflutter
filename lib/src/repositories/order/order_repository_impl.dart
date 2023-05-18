@@ -35,8 +35,10 @@ class OrderRepositoryImpl implements OrderRepository {
   }
 
   @override
-  Future<List<OrderModel>> findAllOrders(DateTime date,
-      [OrderStatus? status]) async {
+  Future<List<OrderModel>> findAllOrders(
+    DateTime date, [
+    OrderStatus? status,
+  ]) async {
     try {
       final orderResponse = await _dio.auth().get(
         '/orders',
@@ -45,7 +47,9 @@ class OrderRepositoryImpl implements OrderRepository {
           if (status != null) 'status': status.acronym,
         },
       );
-      return orderResponse.data.map((o) => OrderModel.fromMap(o)).toLis();
+      return orderResponse.data
+          .map<OrderModel>((o) => OrderModel.fromMap(o))
+          .toList();
     } on DioError catch (e, s) {
       log(
         'Erro ao buscar pedidos',
