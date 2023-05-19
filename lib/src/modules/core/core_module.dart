@@ -2,11 +2,13 @@ import 'package:academiadoflutter/src/core/rest_client/custom_dio.dart';
 import 'package:academiadoflutter/src/core/storage/session_storage.dart';
 import 'package:academiadoflutter/src/repositories/products/product_repository.dart';
 import 'package:academiadoflutter/src/repositories/products/product_repository_impl.dart';
+import 'package:academiadoflutter/src/repositories/user/user_repository.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../core/storage/storage.dart';
 import '../../repositories/payment_type/payment_type_repository.dart';
 import '../../repositories/payment_type/payment_type_repository_impl.dart';
+import '../../repositories/user/user_repository_impl.dart';
 
 class CoreModule extends Module {
   @override
@@ -18,5 +20,6 @@ class CoreModule extends Module {
             export: true),
         Bind.lazySingleton<ProductRepository>((i) => ProductRepositoryImpl(i()),
             export: true),
+        Bind.lazySingleton<UserRepository>((i) => UserRepositoryImpl(i())),
       ];
 }
