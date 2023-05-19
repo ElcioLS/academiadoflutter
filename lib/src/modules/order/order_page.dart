@@ -8,6 +8,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../core/ui/helpers/loader.dart';
+import 'detail/order_detail_modal.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
@@ -38,10 +39,22 @@ class _OrderPageState extends State<OrderPage> with Loader, Messages {
             hideLoader();
             showError(controller.errorMessage ?? 'Erro interno');
             break;
+          case OrderStateStatus.showDetailModal:
+            hideLoader();
+            showOrderDetail();
+            break;
         }
       });
       controller.findOrders();
     });
+  }
+
+  void showOrderDetail() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return OrderDetailModal();
+        });
   }
 
   @override

@@ -89,6 +89,14 @@ mixin _$OrderController on OrderControllerBase, Store {
     return _$findOrdersAsyncAction.run(() => super.findOrders());
   }
 
+  late final _$showDetailModalAsyncAction =
+      AsyncAction('OrderControllerBase.showDetailModal', context: context);
+
+  @override
+  Future<void> showDetailModal(OrderModel order) {
+    return _$showDetailModalAsyncAction.run(() => super.showDetailModal(order));
+  }
+
   @override
   String toString() {
     return '''
