@@ -1,14 +1,23 @@
 import 'package:academiadoflutter/src/core/extensions/formatter_extensions.dart';
 import 'package:academiadoflutter/src/core/ui/helpers/size_extensions.dart';
 import 'package:academiadoflutter/src/core/ui/styles/text_styles.dart';
+import 'package:academiadoflutter/src/dto/order/order_dto.dart';
 import 'package:academiadoflutter/src/modules/order/detail/widgets/order_product_item.dart';
 import 'package:flutter/material.dart';
 
+import '../order_controller.dart';
 import 'widgets/order_bottom_bar.dart';
 import 'widgets/order_info_tile.dart';
 
 class OrderDetailModal extends StatefulWidget {
-  const OrderDetailModal({super.key});
+  final OrderController controller;
+  final OrderDto order;
+
+  const OrderDetailModal({
+    super.key,
+    required this.controller,
+    required this.order,
+  });
 
   @override
   State<OrderDetailModal> createState() => _OrderDetailModalState();

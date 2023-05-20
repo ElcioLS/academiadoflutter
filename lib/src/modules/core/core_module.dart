@@ -20,6 +20,7 @@ class CoreModule extends Module {
             export: true),
         Bind.lazySingleton<ProductRepository>((i) => ProductRepositoryImpl(i()),
             export: true),
-        Bind.lazySingleton<UserRepository>((i) => UserRepositoryImpl(i())),
+        Bind.lazySingleton<UserRepository>((i) => UserRepositoryImpl(i()),
+            export: true),
       ];
 }

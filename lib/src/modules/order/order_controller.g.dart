@@ -81,6 +81,24 @@ mixin _$OrderController on OrderControllerBase, Store {
     });
   }
 
+  late final _$_orderSelectedAtom =
+      Atom(name: 'OrderControllerBase._orderSelected', context: context);
+
+  OrderDto? get orderSelected {
+    _$_orderSelectedAtom.reportRead();
+    return super._orderSelected;
+  }
+
+  @override
+  OrderDto? get _orderSelected => orderSelected;
+
+  @override
+  set _orderSelected(OrderDto? value) {
+    _$_orderSelectedAtom.reportWrite(value, super._orderSelected, () {
+      super._orderSelected = value;
+    });
+  }
+
   late final _$findOrdersAsyncAction =
       AsyncAction('OrderControllerBase.findOrders', context: context);
 
@@ -93,8 +111,8 @@ mixin _$OrderController on OrderControllerBase, Store {
       AsyncAction('OrderControllerBase.showDetailModal', context: context);
 
   @override
-  Future<void> showDetailModal(OrderModel order) {
-    return _$showDetailModalAsyncAction.run(() => super.showDetailModal(order));
+  Future<void> showDetailModal(OrderModel model) {
+    return _$showDetailModalAsyncAction.run(() => super.showDetailModal(model));
   }
 
   @override
