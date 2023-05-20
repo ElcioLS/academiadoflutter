@@ -8,7 +8,7 @@ class OrderDto {
   final int id;
   final DateTime date;
   final OrderStatus status;
-  final List<OrderProductDto> orderProduct;
+  final List<OrderProductDto> orderProducts;
   final UserModel user;
   final String address;
   final String cpf;
@@ -18,7 +18,7 @@ class OrderDto {
     required this.id,
     required this.date,
     required this.status,
-    required this.orderProduct,
+    required this.orderProducts,
     required this.user,
     required this.address,
     required this.cpf,

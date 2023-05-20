@@ -39,7 +39,7 @@ class GetOrderByIdImpl implements GetOrderById {
       id: order.id,
       date: order.date,
       status: order.status,
-      orderProduct: responses[2] as List<OrderProductDto>,
+      orderProducts: responses[2] as List<OrderProductDto>,
       user: responses[1] as UserModel,
       address: order.address,
       cpf: order.cpf,

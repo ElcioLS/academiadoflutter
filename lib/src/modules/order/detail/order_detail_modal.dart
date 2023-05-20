@@ -72,14 +72,14 @@ class _OrderDetailModalState extends State<OrderDetailModal> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Elcinho',
+                      widget.order.user.name,
                       style: context.textStyles.textRegular,
                     ),
                   ],
                 ),
                 const Divider(),
-                ...List.generate(3, (index) => index)
-                    .map((e) => const OrderProductItem())
+                ...widget.order.orderProducts
+                    .map((op) => OrderProductItem(orderProduct: op))
                     .toList(),
                 const SizedBox(height: 10),
                 Padding(
@@ -93,7 +93,13 @@ class _OrderDetailModalState extends State<OrderDetailModal> {
                             .copyWith(fontSize: 18),
                       ),
                       Text(
-                        200.0.CurrencyPTBR,
+                        widget.order.orderProducts
+                            .fold<double>(
+                              0.0,
+                              (previousValue, p) =>
+                                  previousValue + p.totalPrice,
+                            )
+                            .CurrencyPTBR,
                         style: context.textStyles.textExtraBold
                             .copyWith(fontSize: 18),
                       ),
@@ -101,14 +107,14 @@ class _OrderDetailModalState extends State<OrderDetailModal> {
                   ),
                 ),
                 const Divider(),
-                const OrderInfoTile(
+                OrderInfoTile(
                   label: 'Endereço de entrega: ',
-                  info: 'Praça da Matriz',
+                  info: widget.order.address,
                 ),
                 const Divider(),
-                const OrderInfoTile(
+                OrderInfoTile(
                   label: 'Forma de pagamento: ',
-                  info: 'Pagamento via PIX',
+                  info: widget.order.paymentTypeModel.name,
                 ),
                 const SizedBox(height: 10),
                 const OrderBottomBar(),
