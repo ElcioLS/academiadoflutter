@@ -117,7 +117,10 @@ class _OrderDetailModalState extends State<OrderDetailModal> {
                   info: widget.order.paymentTypeModel.name,
                 ),
                 const SizedBox(height: 10),
-                const OrderBottomBar(),
+                OrderBottomBar(
+                  controller: widget.controller,
+                  order: widget.order,
+                ),
               ],
             ),
           ),

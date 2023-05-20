@@ -16,6 +16,7 @@ enum OrderStateStatus {
   loaded,
   error,
   showDetailModal,
+  statusChanged;
 }
 
 class OrderController = OrderControllerBase with _$OrderController;
@@ -64,9 +65,27 @@ abstract class OrderControllerBase with Store {
 
   @action
   Future<void> showDetailModal(OrderModel model) async {
-    _status = OrderStateStatus.loading;
-    // await Future.delayed(Duration.zero);
-    _orderSelected = await _getOrderById(model);
-    _status = OrderStateStatus.showDetailModal;
+    try {
+      _status = OrderStateStatus.loading;
+      _orderSelected = await _getOrderById(model);
+      _status = OrderStateStatus.showDetailModal;
+    } catch (e, s) {
+      log('Erro ao exibir detalhes', error: e, stackTrace: s);
+      _status = OrderStateStatus.error;
+      _errorMessage = 'Erro ao exibir detalhes';
+    }
+  }
+
+  @action
+  Future<void> changeStatus(OrderStatus status) async {
+    try {
+      _status = OrderStateStatus.loading;
+      await _orderRepository.changeStatus(_orderSelected!.id, status);
+      _status = OrderStateStatus.statusChanged;
+    } catch (e, s) {
+      log('Erro ao alterar status', error: e, stackTrace: s);
+      _status = OrderStateStatus.error;
+      _errorMessage = 'Erro ao alterar status';
+    }
   }
 }
