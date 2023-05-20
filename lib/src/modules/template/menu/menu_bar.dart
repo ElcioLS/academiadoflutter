@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:academiadoflutter/src/core/ui/helpers/history_back_listener.dart';
 import 'package:academiadoflutter/src/core/ui/helpers/size_extensions.dart';
 import 'package:academiadoflutter/src/modules/template/menu/menu_button.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +15,22 @@ class MenuBar extends StatefulWidget {
   State<MenuBar> createState() => _MenuBarState();
 }
 
-class _MenuBarState extends State<MenuBar> {
+class _MenuBarState extends State<MenuBar> with HistoryBackListener {
   Menu? selectedMenu;
   var colapsed = false;
+
+  @override
+  void onHistoryBack(Event event) {
+    setState(() {
+      selectedMenu = Menu.findByPath(Modular.to.path);
+    });
+  }
+
+  @override
+  void initState() {
+    selectedMenu = Menu.findByPath(Modular.to.path);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
