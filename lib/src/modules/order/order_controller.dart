@@ -51,6 +51,12 @@ abstract class OrderControllerBase with Store {
   }
 
   @action
+  void changeStatusFilter(OrderStatus? status) {
+    _statusFilter = status;
+    findOrders();
+  }
+
+  @action
   Future<void> findOrders() async {
     try {
       _status = OrderStateStatus.loading;
